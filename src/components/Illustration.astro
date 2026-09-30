@@ -1,0 +1,193 @@
+---
+// Autorskie ilustracje wektorowe (lekkie, ostre na każdym ekranie, zero requestów).
+// Używane jako fallback, gdy w src/assets/photos brak zdjęcia dla danej sekcji.
+import type { Illustration } from '../data/types';
+interface Props { variant: Illustration; title: string; class?: string }
+const { variant, title, class: cls } = Astro.props;
+const g = globalThis as unknown as { __il?: number }; g.__il = (g.__il ?? 0) + 1; const id = `il-${variant}-${g.__il}`;
+---
+<svg class:list={['illu', cls]} viewBox="0 0 600 480" role="img" aria-labelledby={`${id}-t`} preserveAspectRatio="xMidYMid slice">
+  <title id={`${id}-t`}>{title}</title>
+  <defs>
+    <linearGradient id={`${id}-sky`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color={variant === 'snow' ? '#dfe9ee' : '#e9f1e2'} />
+      <stop offset="1" stop-color={variant === 'snow' ? '#f6f8f9' : '#f7f4ec'} />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="480" fill={`url(#${id}-sky)`} />
+  <circle cx="480" cy="110" r="54" fill={variant === 'snow' ? '#ffffff' : '#f5a524'} opacity={variant === 'snow' ? 0.9 : 0.35} />
+  <!-- tło: pas lasu (Puszcza Zielona) -->
+  <g fill={variant === 'snow' ? '#b9c9c4' : '#b8d3ad'}>
+    <path d="M0 330 L20 300 L40 330 L55 285 L75 330 L95 295 L115 330 L130 280 L150 330 L170 300 L190 330 L205 290 L225 330 L245 305 L262 330 L280 285 L300 330 L320 300 L340 330 L355 280 L375 330 L395 298 L415 330 L432 288 L450 330 L470 302 L490 330 L505 284 L525 330 L545 300 L565 330 L582 292 L600 330 V480 H0Z" />
+  </g>
+  <rect y="360" width="600" height="120" fill={variant === 'snow' ? '#eef3f4' : '#9cc28d'} />
+  <rect y="360" width="600" height="8" fill={variant === 'snow' ? '#dbe5e7' : '#86b377'} />
+
+  {variant === 'arborist' && (
+    <g>
+      <!-- dom -->
+      <g transform="translate(40 250)">
+        <path d="M0 60 L70 10 L140 60 V120 H0Z" fill="#f3efe4" stroke="#10231a" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M-8 64 L70 4 L148 64" fill="none" stroke="#173f2a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="25" y="74" width="28" height="28" fill="#dcebd3" stroke="#10231a" stroke-width="3"/>
+        <rect x="84" y="72" width="30" height="48" fill="#8a4a00" stroke="#10231a" stroke-width="3"/>
+      </g>
+      <!-- drzewo -->
+      <path d="M352 372 C356 300 350 220 360 150 L378 150 C388 220 384 300 392 372Z" fill="#6b4a2f" stroke="#10231a" stroke-width="3"/>
+      <path d="M368 220 L318 176" stroke="#6b4a2f" stroke-width="12" stroke-linecap="round"/>
+      <path d="M372 190 L430 150" stroke="#6b4a2f" stroke-width="11" stroke-linecap="round"/>
+      <g stroke="#10231a" stroke-width="3">
+        <circle cx="300" cy="160" r="56" fill="#3b7a4d"/>
+        <circle cx="440" cy="130" r="62" fill="#2f6a41"/>
+        <circle cx="370" cy="96" r="70" fill="#3b7a4d"/>
+        <circle cx="410" cy="190" r="44" fill="#1f5537"/>
+      </g>
+      <!-- odcięta sekcja -->
+      <g transform="rotate(-18 250 250)">
+        <rect x="222" y="232" width="62" height="22" rx="6" fill="#8a6440" stroke="#10231a" stroke-width="3"/>
+        <ellipse cx="222" cy="243" rx="6" ry="11" fill="#e8d2ad" stroke="#10231a" stroke-width="3"/>
+      </g>
+      <path d="M236 290 l-8 14 M258 296 l-3 14" stroke="#10231a" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
+      <!-- lina i alpinista -->
+      <path d="M430 150 C 420 200 418 220 412 250" stroke="#f5a524" stroke-width="4" fill="none"/>
+      <path d="M412 250 C 400 300 390 330 372 372" stroke="#f5a524" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+      <g transform="translate(398 238)">
+        <circle cx="14" cy="-10" r="11" fill="#f1c9a5" stroke="#10231a" stroke-width="3"/>
+        <path d="M2 -14 a12 12 0 0 1 24 0 z" fill="#f5a524" stroke="#10231a" stroke-width="3"/>
+        <rect x="4" y="2" width="20" height="30" rx="6" fill="#173f2a" stroke="#10231a" stroke-width="3"/>
+        <path d="M6 30 L-6 50 M22 30 L24 52" stroke="#10231a" stroke-width="6" stroke-linecap="round"/>
+        <path d="M6 10 L-14 4" stroke="#10231a" stroke-width="5" stroke-linecap="round"/>
+        <rect x="-38" y="-2" width="26" height="10" rx="2" fill="#f5a524" stroke="#10231a" stroke-width="2.5"/>
+        <path d="M-38 3 H-54" stroke="#6f7a73" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <!-- pachołki -->
+      <path d="M190 372 l10 -30 l10 30z" fill="#f5a524" stroke="#10231a" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M470 372 l10 -30 l10 30z" fill="#f5a524" stroke="#10231a" stroke-width="3" stroke-linejoin="round"/>
+    </g>
+  )}
+
+  {variant === 'lift' && (
+    <g>
+      <!-- drzewo w tle -->
+      <path d="M470 372 V200" stroke="#6b4a2f" stroke-width="16"/>
+      <g stroke="#10231a" stroke-width="3"><circle cx="470" cy="170" r="70" fill="#3b7a4d"/><circle cx="520" cy="220" r="44" fill="#1f5537"/></g>
+      <!-- pojazd -->
+      <g stroke="#10231a" stroke-width="3" stroke-linejoin="round">
+        <rect x="70" y="300" width="210" height="46" rx="6" fill="#f3efe4"/>
+        <path d="M280 300 H330 L356 326 V346 H280Z" fill="#f5a524"/>
+        <path d="M292 308 H326 L344 326 H292Z" fill="#cfe3ef"/>
+        <rect x="60" y="340" width="300" height="12" rx="4" fill="#173f2a"/>
+        <circle cx="120" cy="360" r="20" fill="#2a2f2c"/><circle cx="120" cy="360" r="8" fill="#9aa39d"/>
+        <circle cx="300" cy="360" r="20" fill="#2a2f2c"/><circle cx="300" cy="360" r="8" fill="#9aa39d"/>
+        <rect x="120" y="282" width="46" height="22" rx="4" fill="#173f2a"/>
+        <!-- wysięgnik -->
+        <path d="M144 290 L250 150" stroke="#10231a" stroke-width="18" stroke-linecap="round"/>
+        <path d="M144 290 L250 150" stroke="#f5a524" stroke-width="12" stroke-linecap="round"/>
+        <path d="M250 150 L380 118" stroke="#10231a" stroke-width="14" stroke-linecap="round"/>
+        <path d="M250 150 L380 118" stroke="#f3efe4" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="250" cy="150" r="10" fill="#173f2a"/>
+        <!-- kosz -->
+        <rect x="372" y="96" width="56" height="40" rx="4" fill="#f5a524"/>
+        <path d="M372 110 H428" stroke="#10231a"/>
+        <!-- podpory -->
+        <path d="M86 346 V372 H72 M260 346 V372 H246" fill="none" stroke-width="5"/>
+      </g>
+      <!-- operator -->
+      <g transform="translate(392 62)">
+        <circle cx="10" cy="14" r="10" fill="#f1c9a5" stroke="#10231a" stroke-width="3"/>
+        <path d="M-1 10 a11 11 0 0 1 22 0 z" fill="#ffffff" stroke="#10231a" stroke-width="3"/>
+        <rect x="0" y="24" width="20" height="14" rx="4" fill="#173f2a" stroke="#10231a" stroke-width="3"/>
+        <path d="M18 28 L40 18" stroke="#10231a" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <path d="M40 372 l10 -26 l10 26z M370 372 l10 -26 l10 26z" fill="#f5a524" stroke="#10231a" stroke-width="3" stroke-linejoin="round"/>
+    </g>
+  )}
+
+  {variant === 'height' && (
+    <g stroke="#10231a" stroke-width="3" stroke-linejoin="round">
+      <rect x="120" y="120" width="300" height="252" fill="#f3efe4"/>
+      <path d="M100 124 L270 40 L440 124Z" fill="#173f2a"/>
+      <rect x="96" y="120" width="348" height="12" fill="#6f7a73"/>
+      <g fill="#cfe3ef">
+        <rect x="150" y="160" width="50" height="60"/><rect x="245" y="160" width="50" height="60"/><rect x="340" y="160" width="50" height="60"/>
+        <rect x="150" y="260" width="50" height="60"/><rect x="340" y="260" width="50" height="60"/>
+      </g>
+      <rect x="245" y="266" width="50" height="106" fill="#8a4a00"/>
+      <!-- lina -->
+      <path d="M430 132 V300" stroke="#f5a524" stroke-width="4" fill="none"/>
+      <g transform="translate(418 190)">
+        <circle cx="12" cy="0" r="10" fill="#f1c9a5"/>
+        <path d="M1 -4 a11 11 0 0 1 22 0 z" fill="#f5a524"/>
+        <rect x="2" y="10" width="20" height="30" rx="6" fill="#173f2a"/>
+        <path d="M4 38 L-8 50 M20 38 L10 58" stroke-width="6" stroke-linecap="round"/>
+        <path d="M4 18 L-16 10" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <path d="M470 372 V250" stroke="#6b4a2f" stroke-width="12"/>
+      <circle cx="480" cy="230" r="40" fill="#3b7a4d"/>
+    </g>
+  )}
+
+  {variant === 'garden' && (
+    <g stroke="#10231a" stroke-width="3" stroke-linejoin="round">
+      <path d="M296 372 C300 320 296 260 302 210 L318 210 C324 260 320 320 324 372Z" fill="#6b4a2f"/>
+      <path d="M310 250 L262 214 M312 230 L360 196" stroke="#6b4a2f" stroke-width="10" stroke-linecap="round"/>
+      <path d="M190 190 C190 100 430 100 430 190 C430 240 190 240 190 190Z" fill="#3b7a4d"/>
+      <path d="M220 190 C225 140 395 140 400 190" fill="none" stroke="#dcebd3" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <!-- żywopłot -->
+      <rect x="40" y="316" width="180" height="56" rx="20" fill="#1f5537"/>
+      <rect x="400" y="316" width="170" height="56" rx="20" fill="#1f5537"/>
+      <!-- sekator -->
+      <g transform="translate(440 210) rotate(-30)">
+        <path d="M0 0 L60 -8 L60 8Z" fill="#9aa39d"/>
+        <path d="M0 0 L60 8 L50 16Z" fill="#6f7a73"/>
+        <rect x="-60" y="-8" width="60" height="12" rx="6" fill="#f5a524"/>
+        <rect x="-60" y="4" width="60" height="12" rx="6" fill="#f5a524"/>
+      </g>
+      <g fill="#86b377" stroke="none"><circle cx="230" cy="330" r="6"/><circle cx="252" cy="344" r="4"/><circle cx="376" cy="336" r="5"/></g>
+    </g>
+  )}
+
+  {variant === 'snow' && (
+    <g stroke="#10231a" stroke-width="3" stroke-linejoin="round">
+      <rect x="110" y="200" width="380" height="172" fill="#f3efe4"/>
+      <path d="M80 206 L300 90 L520 206Z" fill="#8a4a00"/>
+      <path d="M86 204 C120 180 160 170 200 150 C240 132 270 108 300 96 C330 108 360 132 400 150 C440 170 480 180 514 204 C470 212 430 200 390 210 C340 222 260 222 210 210 C170 200 130 212 86 204Z" fill="#ffffff"/>
+      <g fill="#dff1fb">
+        <path d="M150 212 l6 22 l6 -22z"/><path d="M230 216 l5 28 l5 -28z"/><path d="M372 216 l5 18 l5 -18z"/><path d="M450 212 l6 26 l6 -26z"/>
+      </g>
+      <rect x="170" y="250" width="60" height="60" fill="#cfe3ef"/><rect x="370" y="250" width="60" height="60" fill="#cfe3ef"/>
+      <rect x="272" y="280" width="56" height="92" fill="#173f2a"/>
+      <!-- pracownik z łopatą na dachu -->
+      <g transform="translate(318 70)">
+        <circle cx="12" cy="0" r="10" fill="#f1c9a5"/>
+        <path d="M1 -4 a11 11 0 0 1 22 0 z" fill="#f5a524"/>
+        <rect x="2" y="10" width="20" height="28" rx="6" fill="#173f2a"/>
+        <path d="M6 36 L0 58 M18 36 L26 56" stroke-width="6" stroke-linecap="round"/>
+        <path d="M20 18 L52 40" stroke-width="4" stroke-linecap="round"/>
+        <path d="M46 36 l18 8 l-8 14 l-16 -10z" fill="#f5a524"/>
+      </g>
+      <path d="M318 70 C 280 40 240 40 200 60" stroke="#f5a524" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+      <g fill="#ffffff" stroke="#b9c9c4" stroke-width="1.5">
+        <circle cx="60" cy="80" r="5"/><circle cx="140" cy="50" r="4"/><circle cx="560" cy="60" r="5"/><circle cx="530" cy="150" r="4"/><circle cx="90" cy="160" r="4"/><circle cx="420" cy="40" r="3"/>
+      </g>
+    </g>
+  )}
+
+  {(variant === 'forest' || variant === 'stump') && (
+    <g stroke="#10231a" stroke-width="3" stroke-linejoin="round">
+      <path d="M120 372 V250" stroke="#6b4a2f" stroke-width="10"/>
+      <path d="M120 120 L170 210 H150 L186 280 H54 L90 210 H70Z" fill="#1f5537"/>
+      <path d="M470 372 V260" stroke="#6b4a2f" stroke-width="10"/>
+      <path d="M470 140 L516 220 H498 L530 286 H410 L442 220 H424Z" fill="#2f6a41"/>
+      <path d="M300 372 V236" stroke="#6b4a2f" stroke-width="12"/>
+      <path d="M300 60 L360 170 H336 L380 262 H220 L264 170 H240Z" fill="#3b7a4d"/>
+      <ellipse cx="200" cy="370" rx="34" ry="10" fill="#e8d2ad"/>
+      <path d="M166 370 V350 H234 V370" fill="#8a6440"/>
+      <ellipse cx="200" cy="350" rx="34" ry="10" fill="#e8d2ad"/>
+      <circle cx="200" cy="350" r="4" fill="none" stroke="#8a6440" stroke-width="2"/>
+    </g>
+  )}
+</svg>
+<style>
+  .illu { width: 100%; height: 100%; }
+</style>

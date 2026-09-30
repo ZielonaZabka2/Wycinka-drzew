@@ -1,0 +1,29 @@
+---
+import Illustration from './Illustration.astro';
+import Icon from './Icon.astro';
+import type { Service } from '../data/types';
+interface Props { service: Service; headingLevel?: 'h2' | 'h3' }
+const { service, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+---
+<article class="sc">
+  <div class="sc__img"><Illustration variant={service.illustration} title={service.name} /></div>
+  <div class="sc__body">
+    <H class="sc__h"><a href={`/uslugi/${service.slug}/`}>{service.name}</a></H>
+    <p>{service.excerpt}</p>
+    <span class="sc__more" aria-hidden="true">Szczegóły <Icon name="arrow" size={18} /></span>
+  </div>
+</article>
+<style>
+  .sc { position: relative; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease; }
+  .sc:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .sc__img { aspect-ratio: 16 / 10; background: var(--leaf-2); }
+  .sc__img :global(svg) { width: 100%; height: 100%; }
+  .sc__body { padding: 22px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+  .sc__h { font-size: 1.3rem; margin-bottom: .4em; }
+  .sc__h a { color: var(--ink); text-decoration: none; }
+  .sc__h a::after { content: ''; position: absolute; inset: 0; }
+  .sc p { color: var(--muted); margin-bottom: 18px; }
+  .sc__more { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--forest-2); }
+  .sc:hover .sc__more { color: var(--accent-ink); }
+</style>

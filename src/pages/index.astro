@@ -1,0 +1,233 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { locations } from '../data/locations';
+import { faqGroups } from '../data/faq';
+import { faqSchema, howToSchema } from '../data/schema';
+
+const title = 'Wycinka drzew Ostrołęka – alpinistycznie i zwyżką | SCH';
+const description = 'Wycinka drzew w Ostrołęce i okolicach: metoda alpinistyczna, drzewa niebezpieczne, zwyżka z operatorem, prace wysokościowe. Bezpłatna wycena – 572 345 128.';
+const homeFaq = faqGroups.flatMap((g) => g.items).slice(0, 8);
+const steps = [
+  { name: 'Telefon lub SMS ze zdjęciem', text: 'Opisz drzewo lub zadanie i podaj adres. Zdjęcie wysłane SMS-em przyspiesza wstępną ocenę.' },
+  { name: 'Bezpłatne oględziny i wycena', text: 'Oceniamy stan drzewa, otoczenie i dojazd, dobieramy metodę: wycinka alpinistyczna, ze zwyżki lub tradycyjna.' },
+  { name: 'Wycinka z zabezpieczeniem terenu', text: 'Wygradzamy strefę pracy, a drzewo w trudnym miejscu usuwamy sekcjami, opuszczając kawałki na linach.' },
+  { name: 'Porządek po pracy', text: 'Uprzątamy teren. Pocięcie drewna, zrębkowanie gałęzi lub wywóz ustalamy indywidualnie przy wycenie.' },
+];
+const facts = [
+  { icon: 'shield', label: 'Bezpieczeństwo', value: 'Wycinka sekcyjna na linach nad dachami i ogrodzeniami' },
+  { icon: 'lift', label: 'Sprzęt', value: 'Podnośnik koszowy (zwyżka) z operatorem' },
+  { icon: 'map', label: 'Zasięg', value: `Ostrołęka + ok. ${site.serviceRadiusKm} km` },
+  { icon: 'file', label: 'Wycena', value: 'Bezpłatna, po oględzinach lub ze zdjęć' },
+] as const;
+---
+<Base title={title} description={description} schema={[faqSchema(homeFaq), howToSchema('Jak przebiega wycinka drzewa z SCH Wycinka Drzew', steps)]}>
+  <section class="hero">
+    <div class="container hero__in">
+      <div class="hero__txt">
+        <p class="eyebrow">Ostrołęka · powiat ostrołęcki · Kurpie</p>
+        <h1>Wycinka drzew w Ostrołęce <span>bezpiecznie, nawet tam, gdzie nie wjedzie żaden sprzęt</span></h1>
+        <p class="lead bluf">SCH Wycinka Drzew z Ostrołęki usuwa i pielęgnuje drzewa metodą alpinistyczną oraz z podnośnika koszowego. Tniemy sekcyjnie drzewa rosnące przy domach, liniach i ogrodzeniach, wynajmujemy zwyżkę z operatorem i odśnieżamy dachy. Działamy w promieniu ok. {site.serviceRadiusKm} km, a wycena jest bezpłatna.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href={site.phoneHref}><Icon name="phone" />Zadzwoń: {site.phone}</a>
+          <a class="btn btn--ghost" href="/uslugi/">Zobacz usługi <Icon name="arrow" /></a>
+        </div>
+        <ul class="hero__chips">
+          <li><Icon name="check" size={18} />Bezpłatna wycena</li>
+          <li><Icon name="check" size={18} />Metoda alpinistyczna</li>
+          <li><Icon name="check" size={18} />Zwyżka z operatorem</li>
+          <li><Icon name="check" size={18} />Sprzątanie po pracy</li>
+        </ul>
+      </div>
+      <div class="hero__visual">
+        <Photo name="hero" alt="Arborysta na linie usuwa sekcyjnie drzewo rosnące przy domu w Ostrołęce" fallback="arborist" priority sizes="(min-width: 1024px) 560px, 100vw" />
+        <a class="hero__badge" href={site.phoneHref}>
+          <span class="hero__badge-ic"><Icon name="phone" /></span>
+          <span><small>Odbieramy telefon i SMS</small><strong>{site.phone}</strong></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="Najważniejsze informacje w skrócie">
+    <div class="container grid grid-4">
+      {facts.map((f) => (
+        <div class="fact">
+          <span class="fact__ic"><Icon name={f.icon} /></span>
+          <p><span class="fact__l">{f.label}</span><strong>{f.value}</strong></p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="uslugi-h">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Usługi</p>
+        <h2 id="uslugi-h">Co robimy w Ostrołęce i okolicach?</h2>
+        <p class="lead">Od pojedynczego świerka przy domu, przez drzewa zagrażające budynkom, po pracę na wysokości przy elewacji czy rynnach. Jedna firma, jedna wycena, pełne zabezpieczenie terenu.</p>
+      </div>
+      <div class="grid grid-3">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="metody-h">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Dobór metody</p>
+        <h2 id="metody-h">Alpinista czy zwyżka – którą metodę wybrać?</h2>
+        <p class="lead">O metodzie decyduje dostęp do drzewa, jego stan i to, co jest pod nim. Na oględzinach wskazujemy najbezpieczniejszy i najtańszy wariant – często łączymy obie.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <caption class="visually-hidden">Porównanie metod wycinki drzew</caption>
+          <thead><tr><th scope="col">Kryterium</th><th scope="col">Metoda alpinistyczna</th><th scope="col">Podnośnik koszowy (zwyżka)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Dostęp do drzewa</th><td>Wystarczy przejście dla człowieka – ogród za domem, podwórko, skarpa</td><td>Wymaga dojazdu i utwardzonego miejsca do rozstawienia podpór</td></tr>
+            <tr><th scope="row">Najlepsza, gdy…</th><td>Drzewo rośnie tuż przy budynku, nad dachem, linią lub cmentarzem</td><td>Drzewo stoi przy drodze lub na otwartym terenie, a prac jest dużo</td></tr>
+            <tr><th scope="row">Wpływ na teren</th><td>Brak kolein i uszkodzeń trawnika</td><td>Minimalny przy suchym, twardym podłożu</td></tr>
+            <tr><th scope="row">Drzewa spróchniałe, suche</th><td>Z ostrożnością – po ocenie stabilności pnia</td><td>Bezpieczniejsza – pilarz nie obciąża osłabionego drzewa</td></tr>
+            <tr><th scope="row">Inne zastosowania</th><td>Pielęgnacja koron, usuwanie posuszu, prace na dachach</td><td>Rynny, elewacje, montaże, reklamy, iluminacje</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="proces-h">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Jak pracujemy</p>
+        <h2 id="proces-h">Jak przebiega wycinka drzewa krok po kroku?</h2>
+        <p class="lead">Cały proces – od telefonu do posprzątanego terenu – zwykle zamyka się w kilku dniach. Pojedyncze drzewo usuwamy najczęściej w ciągu jednego dnia roboczego.</p>
+        <a class="btn btn--dark" href="/kontakt/">Umów bezpłatną wycenę <Icon name="arrow" /></a>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step">
+            <span class="step__n">{String(i + 1).padStart(2, '0')}</span>
+            <div><h3>{s.name}</h3><p>{s.text}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--dark" aria-labelledby="dlaczego-h">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Dlaczego SCH</p>
+        <h2 id="dlaczego-h">Bezpieczeństwo ludzi i mienia na pierwszym miejscu</h2>
+        <p class="lead">Wycinka przy zabudowie to praca, w której o wyniku decyduje planowanie. Zanim uruchomimy pilarkę, wiemy, gdzie spadnie każdy fragment drzewa.</p>
+      </div>
+      <ul class="checklist">
+        <li><span><strong>Wycinka sekcyjna na linach</strong> – fragmenty drzewa opuszczamy kontrolowanie, bez ryzyka dla dachu, płotu czy auta.</span></li>
+        <li><span><strong>Dwie metody w jednej firmie</strong> – alpinistyczna i z podnośnika koszowego, dobrana do miejsca, a nie do tego, co akurat mamy.</span></li>
+        <li><span><strong>Wygrodzona strefa pracy</strong> – oznakowanie, pachołki i kontrola otoczenia przez cały czas cięcia.</span></li>
+        <li><span><strong>Jasna wycena przed pracą</strong> – zakres, termin i to, co dzieje się z drewnem, ustalamy z góry.</span></li>
+        <li><span><strong>Pomoc w formalnościach</strong> – podpowiemy, czy drzewo wymaga <a href="/poradnik/pozwolenie-na-wycinke-drzew/">zgłoszenia w urzędzie</a>.</span></li>
+        <li><span><strong>Lokalnie, blisko</strong> – baza w Ostrołęce, szybki dojazd na Kurpie i w dolinę Narwi.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="obszar-h">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Obszar działania</p>
+        <h2 id="obszar-h">Gdzie wycinamy drzewa?</h2>
+        <p class="lead">Baza w Ostrołęce, dojazd w promieniu ok. {site.serviceRadiusKm} km: powiat ostrołęcki, Kurpie Zielone, dolina Narwi. Wybierz miejscowość, aby zobaczyć szczegóły i urząd przyjmujący zgłoszenia.</p>
+      </div>
+      <ul class="places">
+        {locations.map((l) => (
+          <li><a href={`/obszar-dzialania/${l.slug}/`}><span><Icon name="pin" size={18} />{l.name}</span><small>{l.distanceKm === 0 ? 'baza' : `${l.distanceKm} km · ok. ${l.driveMin} min`}</small></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="prawo-h">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Poradnik</p>
+        <h2 id="prawo-h">Czy na wycinkę drzewa potrzebujesz pozwolenia?</h2>
+        <p class="lead bluf">Na własnej działce, na cele niezwiązane z działalnością gospodarczą, drzewo można wyciąć bez zgłoszenia, jeśli obwód pnia na wysokości 5 cm nie przekracza progu dla gatunku. Powyżej progu trzeba złożyć zgłoszenie w urzędzie gminy.</p>
+        <a class="btn btn--dark" href="/poradnik/pozwolenie-na-wycinke-drzew/">Przeczytaj pełny poradnik <Icon name="arrow" /></a>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <caption>Progi obwodu pnia (mierzone na wys. 5 cm)</caption>
+          <thead><tr><th scope="col">Gatunek</th><th scope="col">Zgłoszenie powyżej</th></tr></thead>
+          <tbody>
+            <tr><td>Topola, wierzba, klon jesionolistny, klon srebrzysty</td><td><strong>80 cm</strong></td></tr>
+            <tr><td>Kasztanowiec zwyczajny, robinia akacjowa, platan klonolistny</td><td><strong>65 cm</strong></td></tr>
+            <tr><td>Pozostałe gatunki (np. sosna, brzoza, świerk, dąb)</td><td><strong>50 cm</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-h">
+    <div class="container narrow">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-h">Najczęstsze pytania o wycinkę drzew</h2>
+      </div>
+      <FaqList items={homeFaq} open />
+      <p class="more"><a class="btn btn--ghost" href="/faq/">Wszystkie pytania i odpowiedzi <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero { padding: clamp(32px, 5vw, 72px) 0 clamp(40px, 6vw, 80px); background: radial-gradient(1200px 500px at 85% -10%, var(--leaf), transparent 60%), var(--paper); }
+  .hero__in { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .hero h1 span { display: block; font-size: .56em; color: var(--moss); font-weight: 650; margin-top: .35em; letter-spacing: -0.02em; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 24px; }
+  .hero__actions .btn--ghost { color: var(--forest); }
+  .hero__chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-weight: 600; font-size: .95rem; }
+  .hero__chips li { display: inline-flex; align-items: center; gap: 6px; }
+  .hero__chips :global(svg) { color: var(--moss); }
+  .hero__visual { position: relative; }
+  .hero__visual :global(.photo) { aspect-ratio: 1 / 1; box-shadow: var(--shadow-lg); border-radius: 28px; }
+  .hero__badge { position: absolute; left: -20px; bottom: 28px; display: flex; gap: 12px; align-items: center; background: var(--surface); padding: 12px 18px 12px 12px; border-radius: 16px; box-shadow: var(--shadow-lg); text-decoration: none; color: var(--ink); }
+  .hero__badge-ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--accent); }
+  .hero__badge small { display: block; color: var(--muted); font-size: .78rem; }
+  .hero__badge strong { font-family: var(--display); font-size: 1.15rem; }
+  @media (max-width: 960px) { .hero__in { grid-template-columns: minmax(0, 1fr); } .hero__badge { left: 12px; } }
+
+  .facts { margin-top: -8px; }
+  .fact { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .fact p { margin: 0; line-height: 1.4; }
+  .fact__l { display: block; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--moss); margin-bottom: 4px; }
+  .fact__ic { flex: none; width: 46px; height: 46px; border-radius: 12px; background: var(--leaf); color: var(--forest); display: grid; place-items: center; }
+
+  .split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+  @media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 64px 1fr; gap: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .step__n { font-family: var(--display); font-weight: 800; font-size: 2rem; color: var(--accent-ink); line-height: 1; }
+  .step h3 { margin-bottom: .25em; }
+  .step p { margin: 0; color: var(--muted); }
+
+  .places { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+  .places a { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; text-decoration: none; color: var(--ink); font-weight: 700; transition: border-color .15s, transform .15s; }
+  .places a:hover { border-color: var(--moss); transform: translateY(-2px); color: var(--ink); }
+  .places span { display: inline-flex; align-items: center; gap: 8px; }
+  .places :global(svg) { color: var(--moss); }
+  .places small { color: var(--muted); font-weight: 500; font-size: .82rem; white-space: nowrap; }
+  .more { text-align: center; margin-top: 28px; }
+  .more .btn { color: var(--forest); }
+</style>

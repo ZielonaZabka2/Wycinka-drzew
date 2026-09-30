@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+const breadcrumbs = [{ name: 'O nas', href: '/o-nas/' }];
+---
+<Base title="O nas – SCH Wycinka Drzew, alpinistyka i zwyżka Ostrołęka" description="SCH Wycinka Drzew to firma wysokościowa z Ostrołęki: wycinka drzew metodą alpinistyczną, podnośnik koszowy z operatorem, prace na wysokości i odśnieżanie dachów." breadcrumbs={breadcrumbs} pageType="AboutPage">
+  <PageHero h1="O nas: firma wysokościowa z Ostrołęki" lead="SCH Wycinka Drzew to lokalna firma z Ostrołęki specjalizująca się w pracach na wysokości: bezpiecznej wycince drzew metodą alpinistyczną, usługach podnośnikiem koszowym z operatorem oraz sezonowym odśnieżaniu dachów. Pracujemy dla właścicieli domów, wspólnot, firm i instytucji." breadcrumbs={breadcrumbs} illustration="lift" photo="o-nas" photoAlt="Zespół SCH Wycinka Drzew przy pracy z podnośnikiem koszowym" />
+  <section class="section" style="padding-top: 0">
+    <div class="container prose">
+      <h2>Czym się zajmujemy?</h2>
+      <p>Specjalizujemy się w pracach tam, gdzie zwykła pilarka i drabina nie wystarczą. Drzewa rosnące tuż przy domach, nad dachami, przy liniach energetycznych czy na cmentarzach usuwamy sekcyjnie – kawałek po kawałku, opuszczając fragmenty na linach. Gdy dojazd na to pozwala, pracujemy z <a href="/uslugi/podnosnik-koszowy-zwyzka/">podnośnika koszowego</a>, który udostępniamy także do innych prac: montażu, konserwacji i inspekcji.</p>
+      <h2>Jak pracujemy?</h2>
+      <p>Każde zlecenie zaczynamy od oceny drzewa i otoczenia. Ustalamy metodę, zakres, termin i to, co stanie się z drewnem – zanim zaczniemy pracę. Teren wygradzamy, a po zakończeniu sprzątamy. Pomagamy też ustalić, czy dla drzewa trzeba złożyć <a href="/poradnik/pozwolenie-na-wycinke-drzew/">zgłoszenie w urzędzie</a>.</p>
+      <h2>Gdzie działamy?</h2>
+      <p>Nasza baza mieści się przy ul. {site.address.street} w Ostrołęce. Obsługujemy miasto i okoliczne gminy w promieniu ok. {site.serviceRadiusKm} km – pełną listę znajdziesz na stronie <a href="/obszar-dzialania/">obszar działania</a>.</p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

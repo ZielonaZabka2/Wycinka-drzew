@@ -1,0 +1,27 @@
+---
+import type { Faq } from '../data/types';
+interface Props { items: Faq[]; open?: boolean }
+const { items, open = false } = Astro.props;
+---
+<div class="faq">
+  {items.map((f, i) => (
+    <details class="faq__item" open={open && i === 0 ? true : undefined}>
+      <summary><h3>{f.q}</h3><span class="faq__icon" aria-hidden="true"></span></summary>
+      <div class="faq__a" set:html={f.a} />
+    </details>
+  ))}
+</div>
+<style>
+  .faq { display: grid; gap: 12px; }
+  .faq__item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); transition: box-shadow .2s; }
+  .faq__item[open] { box-shadow: var(--shadow); border-color: #cfd9c9; }
+  summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; }
+  summary::-webkit-details-marker { display: none; }
+  summary h3 { margin: 0; font-size: 1.08rem; font-family: var(--font); font-weight: 700; letter-spacing: 0; line-height: 1.4; }
+  .faq__icon { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--leaf); position: relative; }
+  .faq__icon::before, .faq__icon::after { content: ''; position: absolute; inset: 0; margin: auto; width: 12px; height: 2px; background: var(--forest); transition: transform .2s; }
+  .faq__icon::after { transform: rotate(90deg); }
+  .faq__item[open] .faq__icon::after { transform: rotate(0); }
+  .faq__a { padding: 0 22px 20px; color: var(--muted); }
+  .faq__a :global(p:last-child) { margin-bottom: 0; }
+</style>

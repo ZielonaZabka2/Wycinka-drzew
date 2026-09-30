@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import AreaMap from '../components/AreaMap.astro';
+import { site } from '../data/site';
+const breadcrumbs = [{ name: 'Kontakt', href: '/kontakt/' }];
+---
+<Base title="Kontakt i bezpłatna wycena – wycinka drzew Ostrołęka" description={`Zadzwoń ${site.phone} lub wyślij SMS ze zdjęciem drzewa. SCH Wycinka Drzew, ${site.address.street}, ${site.address.postalCode} ${site.address.city}. Bezpłatna wycena.`} breadcrumbs={breadcrumbs} pageType="ContactPage">
+  <PageHero h1="Kontakt i bezpłatna wycena" lead={`Najszybciej: zadzwoń pod ${site.phone} albo wyślij SMS ze zdjęciem drzewa, adresem i krótkim opisem. Oddzwonimy, umówimy oględziny i przygotujemy bezpłatną wycenę. Działamy w Ostrołęce i w promieniu ok. ${site.serviceRadiusKm} km.`} breadcrumbs={breadcrumbs} />
+  <section class="section" style="padding-top: 0">
+    <div class="container grid grid-2">
+      <div class="grid">
+        <a class="card tile" href={site.phoneHref}><span class="ic"><Icon name="phone" /></span><span><small>Telefon</small><strong>{site.phone}</strong></span></a>
+        <a class="card tile" href={site.smsHref}><span class="ic"><Icon name="sms" /></span><span><small>SMS ze zdjęciem drzewa</small><strong>{site.phone}</strong></span></a>
+        <a class="card tile" href={site.mapsUrl} target="_blank" rel="noopener"><span class="ic"><Icon name="pin" /></span><span><small>Adres (otwórz w Mapach Google)</small><strong>{site.address.street}, {site.address.postalCode} {site.address.city}</strong></span></a>
+        {site.email && <a class="card tile" href={`mailto:${site.email}`}><span class="ic"><Icon name="sms" /></span><span><small>E-mail</small><strong>{site.email}</strong></span></a>}
+        <div class="card">
+          <h2 class="h">Co napisać w SMS-ie, żeby dostać szybką wycenę?</h2>
+          <ul class="checklist">
+            <li><span>Adres lub miejscowość, w której rośnie drzewo</span></li>
+            <li><span>2–3 zdjęcia: całe drzewo, pień przy ziemi i otoczenie (dom, płot, linie)</span></li>
+            <li><span>Gatunek (jeśli znasz) i przybliżony obwód pnia na wys. 5 cm</span></li>
+            <li><span>Czego oczekujesz: wycinka, przycięcie, zwyżka, odśnieżanie</span></li>
+            <li><span>Co z drewnem i gałęziami – zostawić, pociąć czy wywieźć</span></li>
+          </ul>
+        </div>
+      </div>
+      <AreaMap />
+    </div>
+  </section>
+</Base>
+<style>
+  .tile { display: flex; gap: 16px; align-items: center; text-decoration: none; color: var(--ink); transition: border-color .15s, transform .15s; }
+  .tile:hover { border-color: var(--moss); transform: translateY(-2px); color: var(--ink); }
+  .tile small { display: block; color: var(--muted); font-size: .85rem; }
+  .tile strong { font-family: var(--display); font-size: 1.25rem; }
+  .ic { flex: none; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 14px; background: var(--accent); }
+  .h { font-size: 1.3rem; }
+</style>

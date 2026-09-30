@@ -1,0 +1,57 @@
+---
+// Schematyczna mapa obszaru działania wyliczana ze współrzędnych miejscowości (bez zewnętrznych map).
+import { locations } from '../data/locations';
+import { site } from '../data/site';
+interface Props { active?: string }
+const { active } = Astro.props;
+const W = 560, H = 460, cx = W / 2, cy = H / 2;
+const kmPerDegLat = 111.2;
+const kmPerDegLng = 111.32 * Math.cos((site.geo.lat * Math.PI) / 180);
+const base = locations.find((l) => l.distanceKm === 0) ?? { lat: site.geo.lat, lng: site.geo.lng };
+// Skala dopasowana do najdalszej miejscowości (w linii prostej), zaokrąglona w górę do 15 km.
+const far = Math.max(...locations.map((l) => Math.hypot((l.lat - base.lat) * kmPerDegLat, (l.lng - base.lng) * kmPerDegLng)));
+const maxKm = Math.ceil((far + 4) / 15) * 15;
+const scale = (Math.min(W, H) / 2 - 28) / maxKm;
+const pts = locations.map((l) => ({
+  ...l,
+  x: cx + (l.lng - base.lng) * kmPerDegLng * scale,
+  y: cy - (l.lat - base.lat) * kmPerDegLat * scale,
+}));
+// Strona etykiety: domyślnie od strony zewnętrznej; zmiana strony, jeśli etykieta zasłoniłaby inny punkt.
+const side = (p: (typeof pts)[number]) => {
+  const w = p.name.length * 7.5 + 14;
+  const hits = (dir: number) => pts.some((o) => o !== p && Math.abs(o.y - p.y) < 12 && (dir < 0 ? o.x < p.x && o.x > p.x - w : o.x > p.x && o.x < p.x + w));
+  const pref = p.x < cx - 2 ? -1 : 1;
+  if (!hits(pref)) return pref;
+  return hits(-pref) ? 0 : -pref;
+};
+---
+<figure class="amap">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="amap-t">
+    <title id="amap-t">Mapa obszaru działania SCH Wycinka Drzew wokół Ostrołęki</title>
+    <rect width={W} height={H} rx="20" fill="#eef5ea" />
+    {[maxKm, (maxKm * 2) / 3, maxKm / 3].map((r) => (
+      <>
+        <circle cx={cx} cy={cy} r={r * scale} fill="none" stroke="#9cc28d" stroke-dasharray="4 6" />
+        <text x={cx + 6} y={cy - r * scale + 16} font-size="12" fill="#4f5b53">{Math.round(r)} km</text>
+      </>
+    ))}
+    {pts.map((p) => {
+      const isActive = p.slug === active;
+      const isBase = p.distanceKm === 0;
+      return (
+        <a href={`/obszar-dzialania/${p.slug}/`}>
+          <circle cx={p.x} cy={p.y} r={isBase ? 11 : isActive ? 9 : 6} fill={isActive || isBase ? '#f5a524' : '#1f5537'} stroke="#10231a" stroke-width="2" />
+          <text x={isBase ? p.x : p.x + side(p) * 12} y={isBase ? p.y - 16 : side(p) === 0 ? p.y + 22 : p.y + 4} text-anchor={isBase || side(p) === 0 ? 'middle' : side(p) < 0 ? 'end' : 'start'} font-size={isActive || isBase ? 15 : 13} font-weight={isActive || isBase ? 700 : 500} fill="#10231a" paint-order="stroke" stroke="#eef5ea" stroke-width="4">{p.name}</text>
+        </a>
+      );
+    })}
+  </svg>
+  <figcaption>Schemat obszaru działania: baza w Ostrołęce i przykładowe miejscowości (odległości w linii prostej); obsługujemy teren do ok. {site.serviceRadiusKm} km. Kliknij miejscowość, aby przejść do jej strony.</figcaption>
+</figure>
+<style>
+  .amap { margin: 0; }
+  .amap svg { width: 100%; height: auto; border-radius: 20px; border: 1px solid var(--line); font-family: var(--font); }
+  .amap a:hover circle { fill: #f5a524; }
+  .amap figcaption { font-size: .88rem; color: var(--muted); margin-top: 10px; }
+</style>

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+const breadcrumbs = [{ name: 'Polityka prywatności', href: '/polityka-prywatnosci/' }];
+---
+<Base title="Polityka prywatności | SCH Wycinka Drzew Ostrołęka" description="Polityka prywatności serwisu wycinkadrzew-ostroleka.pl: administrator danych, zakres przetwarzania, prawa użytkownika. Strona nie używa plików cookie śledzących." breadcrumbs={breadcrumbs}>
+  <section class="section">
+    <div class="container prose">
+      <h1>Polityka prywatności</h1>
+      <p>Administratorem danych osobowych jest {site.name}, {site.address.street}, {site.address.postalCode} {site.address.city}, tel. {site.phone}.</p>
+      <h2>Jakie dane przetwarzamy?</h2>
+      <p>Serwis ma charakter informacyjny i nie zawiera formularzy. Dane osobowe (imię, numer telefonu, adres nieruchomości, zdjęcia) przetwarzamy wyłącznie wtedy, gdy sam się z nami skontaktujesz telefonicznie lub SMS-em – w celu przygotowania wyceny i realizacji usługi (art. 6 ust. 1 lit. b RODO).</p>
+      <h2>Pliki cookie i analityka</h2>
+      <p>Strona nie używa plików cookie śledzących ani narzędzi reklamowych. Dostawca hostingu może zapisywać techniczne logi serwera (adres IP, czas żądania) w celu zapewnienia bezpieczeństwa.</p>
+      <h2>Twoje prawa</h2>
+      <p>Masz prawo dostępu do danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, sprzeciwu oraz wniesienia skargi do Prezesa UODO. Dane przechowujemy przez czas niezbędny do realizacji usługi i rozliczeń wymaganych przepisami.</p>
+      <h2>Kontakt</h2>
+      <p>W sprawach danych osobowych zadzwoń: <a href={site.phoneHref}>{site.phone}</a>.</p>
+    </div>
+  </section>
+</Base>

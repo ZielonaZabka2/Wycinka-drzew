@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Illustration from '../components/Illustration.astro';
+import { site } from '../data/site';
+---
+<Base title="Nie znaleziono strony (404) | SCH Wycinka Drzew" description="Ta strona nie istnieje. Przejdź do usług wycinki drzew w Ostrołęce lub zadzwoń po bezpłatną wycenę." noindex>
+  <section class="section">
+    <div class="container nf">
+      <div>
+        <p class="eyebrow">Błąd 404</p>
+        <h1>Tej gałęzi już nie ma</h1>
+        <p class="lead">Strona, której szukasz, została usunięta lub zmieniła adres.</p>
+        <p><a class="btn btn--primary" href="/">Strona główna</a> <a class="btn btn--dark" href={site.phoneHref}>Zadzwoń: {site.phone}</a></p>
+      </div>
+      <div class="nf__img"><Illustration variant="stump" title="Pień po wyciętym drzewie" /></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .nf__img { border-radius: var(--radius); overflow: hidden; aspect-ratio: 5/4; }
+  .nf .btn { margin: 6px 6px 0 0; }
+  @media (max-width: 860px) { .nf { grid-template-columns: minmax(0, 1fr); } }
+</style>

@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { faqGroups } from '../data/faq';
+import { faqSchema } from '../data/schema';
+const breadcrumbs = [{ name: 'FAQ', href: '/faq/' }];
+const all = faqGroups.flatMap((g) => g.items);
+const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+<Base title="FAQ – wycinka drzew, pozwolenia, zwyżka | Ostrołęka" description={`${all.length} odpowiedzi na najczęstsze pytania: koszt wycinki drzewa, pozwolenia i zgłoszenia, okres lęgowy, zwyżka z operatorem, dojazd. Ostrołęka i okolice.`} breadcrumbs={breadcrumbs} schema={[faqSchema(all)]} pageType="FAQPage">
+  <PageHero h1="Wycinka drzew – najczęstsze pytania i odpowiedzi" lead="Zebraliśmy pytania, które najczęściej słyszymy od klientów z Ostrołęki i okolic: ile kosztuje wycinka, kiedy potrzebne jest zgłoszenie w urzędzie, czy można ciąć w okresie lęgowym, jak działa wynajem zwyżki z operatorem i co dzieje się z drewnem." breadcrumbs={breadcrumbs}>
+    <nav class="toc" aria-label="Kategorie pytań">
+      <ul>{faqGroups.map((g) => <li><a href={`#${slug(g.title)}`}>{g.title}</a></li>)}</ul>
+    </nav>
+  </PageHero>
+  <div class="container narrow">
+    {faqGroups.map((g) => (
+      <section class="grp" id={slug(g.title)} aria-labelledby={`${slug(g.title)}-h`}>
+        <h2 id={`${slug(g.title)}-h`}>{g.title}</h2>
+        <FaqList items={g.items} />
+      </section>
+    ))}
+  </div>
+  <CtaBand title="Nie znalazłeś odpowiedzi?" text="Zadzwoń – odpowiemy na pytania o konkretne drzewo, przepisy w Twojej gminie i dostępne terminy." />
+</Base>
+<style>
+  .toc ul { list-style: none; padding: 0; margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc a { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; color: var(--ink); font-weight: 600; font-size: .92rem; }
+  .grp { padding-block: 24px; }
+  .grp h2 { font-size: clamp(1.4rem, 2.4vw, 1.8rem); margin-bottom: 18px; }
+</style>

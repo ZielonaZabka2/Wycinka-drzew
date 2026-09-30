@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import AreaMap from '../../components/AreaMap.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { locations } from '../../data/locations';
+import { site } from '../../data/site';
+const breadcrumbs = [{ name: 'Obszar działania', href: '/obszar-dzialania/' }];
+const list = {
+  '@type': 'ItemList',
+  name: 'Obszar działania SCH Wycinka Drzew',
+  itemListElement: locations.map((l, i) => ({ '@type': 'ListItem', position: i + 1, name: `Wycinka drzew ${l.name}`, url: `${site.url}/obszar-dzialania/${l.slug}/` })),
+};
+---
+<Base title="Obszar działania – wycinka drzew Ostrołęka i okolice | SCH" description={`Wycinka drzew i zwyżka: Ostrołęka, Rzekuń, Olszewo-Borki, Lelis, Kadzidło, Myszyniec, Goworowo, Różan i okolice do ${site.serviceRadiusKm} km. Sprawdź czas dojazdu i urząd.`} breadcrumbs={breadcrumbs} schema={[list]} pageType="CollectionPage">
+  <PageHero h1="Obszar działania: Ostrołęka i okolice do 60 km" lead={`Pracujemy z bazy w Ostrołęce (${site.address.street}). Dojeżdżamy do miejscowości powiatu ostrołęckiego, na Kurpie Zielone i w dolinę Narwi – zwykle w 15–60 minut. Poniżej znajdziesz odległości, czas dojazdu i urząd, w którym złożysz zgłoszenie wycinki.`} breadcrumbs={breadcrumbs} />
+  <section class="section" style="padding-top: 0">
+    <div class="container split">
+      <AreaMap />
+      <div class="table-wrap">
+        <table>
+          <caption>Miejscowości, odległość i urząd właściwy dla zgłoszeń</caption>
+          <thead><tr><th scope="col">Miejscowość</th><th scope="col">Odległość</th><th scope="col">Urząd</th></tr></thead>
+          <tbody>
+            {locations.map((l) => (
+              <tr>
+                <th scope="row"><a href={`/obszar-dzialania/${l.slug}/`}>{l.name}</a></th>
+                <td>{l.distanceKm === 0 ? 'baza' : `${l.distanceKm} km / ${l.driveMin} min`}</td>
+                <td>{l.office}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="container note">
+      <p><Icon name="pin" size={18} /> Nie widzisz swojej miejscowości? Obsługujemy cały teren w promieniu ok. {site.serviceRadiusKm} km od Ostrołęki – <a href={site.phoneHref}>zadzwoń: {site.phone}</a>.</p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  .split { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: start; }
+  @media (max-width: 960px) { .split { grid-template-columns: minmax(0, 1fr); } }
+  .note p { display: flex; gap: 8px; align-items: center; margin-top: 24px; flex-wrap: wrap; }
+</style>

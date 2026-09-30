@@ -1,0 +1,52 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site, nav } from '../data/site';
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/uslugi/' ? path === href : path.startsWith(href));
+---
+<header class="hdr">
+  <div class="container hdr__in">
+    <a href="/" class="hdr__logo"><Logo /></a>
+    <nav class="hdr__nav" aria-label="Główna nawigacja">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a class="btn btn--primary hdr__call" href={site.phoneHref}>
+      <Icon name="phone" /><span>{site.phone.replace('+48 ', '')}</span>
+    </a>
+    <details class="hdr__mobile">
+      <summary aria-label="Otwórz menu"><Icon name="menu" size={26} /></summary>
+      <nav aria-label="Menu mobilne" class="hdr__drawer">
+        <ul>
+          {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href="/o-nas/">O nas</a></li>
+        </ul>
+        <a class="btn btn--primary" href={site.phoneHref}><Icon name="phone" />Zadzwoń: {site.phone}</a>
+      </nav>
+    </details>
+  </div>
+</header>
+<style>
+  .hdr { position: sticky; top: 0; z-index: 50; background: rgb(247 244 236 / .92); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+  .hdr__in { display: flex; align-items: center; gap: 24px; min-height: 76px; }
+  .hdr__logo { text-decoration: none; margin-right: auto; }
+  .hdr__nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .hdr__nav a { display: block; white-space: nowrap; padding: 8px 12px; border-radius: 999px; text-decoration: none; color: var(--ink); font-weight: 600; font-size: .95rem; }
+  .hdr__nav a:hover { background: var(--leaf); color: var(--ink); }
+  .hdr__nav a[aria-current='page'] { background: var(--forest); color: #fff; }
+  .hdr__call { min-height: 46px; padding-inline: 1.1em; white-space: nowrap; }
+  .hdr__mobile { display: none; position: relative; }
+  .hdr__mobile summary { list-style: none; cursor: pointer; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); }
+  .hdr__mobile summary::-webkit-details-marker { display: none; }
+  .hdr__drawer { position: absolute; right: 0; top: 58px; width: min(88vw, 340px); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 12px; }
+  .hdr__drawer ul { list-style: none; margin: 0 0 12px; padding: 0; }
+  .hdr__drawer a:not(.btn) { display: block; padding: 12px 14px; border-radius: 10px; color: var(--ink); text-decoration: none; font-weight: 600; }
+  .hdr__drawer a:not(.btn):hover { background: var(--leaf-2); }
+  .hdr__drawer .btn { width: 100%; }
+  @media (max-width: 1260px) { .hdr__nav { display: none; } .hdr__mobile { display: block; } }
+  @media (max-width: 560px) { .hdr__call { display: none; } .hdr__in { min-height: 68px; } }
+</style>

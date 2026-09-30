@@ -1,0 +1,36 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import type { Illustration } from '../data/types';
+interface Props { h1: string; lead: string; eyebrow?: string; breadcrumbs: { name: string; href: string }[]; photo?: string; illustration?: Illustration; photoAlt?: string }
+const { h1, lead, eyebrow, breadcrumbs, photo, illustration, photoAlt } = Astro.props;
+---
+<section class="ph">
+  <div class:list={['container', 'ph__in', { 'ph__in--img': illustration }]}>
+    <div class="ph__txt">
+      <Breadcrumbs items={breadcrumbs} />
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{h1}</h1>
+      <p class="lead bluf">{lead}</p>
+      <div class="ph__actions">
+        <a class="btn btn--primary" href={site.phoneHref}><Icon name="phone" />Zadzwoń: {site.phone}</a>
+        <a class="btn btn--ghost" href="/kontakt/">Bezpłatna wycena</a>
+      </div>
+      <slot />
+    </div>
+    {illustration && (
+      <Photo name={photo ?? ''} alt={photoAlt ?? h1} fallback={illustration} priority sizes="(min-width: 1024px) 520px, 100vw" class="ph__photo" />
+    )}
+  </div>
+</section>
+<style>
+  .ph { padding: clamp(28px, 4vw, 48px) 0 clamp(48px, 7vw, 88px); background: linear-gradient(180deg, var(--leaf-2), var(--paper)); }
+  .ph__in--img { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .ph h1 { font-size: clamp(2.1rem, 4.6vw, 3.5rem); }
+  .ph__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .ph__actions .btn--ghost { color: var(--forest); }
+  :global(.ph__photo) { box-shadow: var(--shadow-lg); }
+  @media (max-width: 900px) { .ph__in--img { grid-template-columns: minmax(0, 1fr); } }
+</style>

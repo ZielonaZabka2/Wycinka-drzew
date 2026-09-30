@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AreaMap from '../../components/AreaMap.astro';
+import Icon from '../../components/Icon.astro';
+import { locations } from '../../data/locations';
+import { services } from '../../data/services';
+import { site } from '../../data/site';
+import { faqSchema, BUSINESS_ID } from '../../data/schema';
+import type { Location } from '../../data/types';
+
+export function getStaticPaths() {
+  return locations.map((location) => ({ params: { slug: location.slug }, props: { location } }));
+}
+const { location: l } = Astro.props as { location: Location };
+const url = `${site.url}/obszar-dzialania/${l.slug}/`;
+const breadcrumbs = [
+  { name: 'Obszar działania', href: '/obszar-dzialania/' },
+  { name: l.name, href: `/obszar-dzialania/${l.slug}/` },
+];
+const nearby = locations
+  .filter((x) => x.slug !== l.slug)
+  .map((x) => ({ ...x, d: Math.hypot((x.lat - l.lat) * 111, (x.lng - l.lng) * 67) }))
+  .sort((a, b) => a.d - b.d)
+  .slice(0, 5);
+const localService = {
+  '@type': 'Service',
+  '@id': `${url}#service`,
+  name: `Wycinka drzew ${l.name}`,
+  serviceType: 'Wycinka drzew',
+  provider: { '@id': BUSINESS_ID },
+  areaServed: {
+    '@type': 'Place',
+    name: `${l.name} (${l.admin})`,
+    geo: { '@type': 'GeoCoordinates', latitude: l.lat, longitude: l.lng },
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: `Usługi w miejscowości ${l.name}`,
+    itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@id': `${site.url}/uslugi/${s.slug}/#service` } })),
+  },
+};
+---
+<Base title={l.title} description={l.metaDescription} breadcrumbs={breadcrumbs} schema={[localService, faqSchema(l.faq)]}>
+  <PageHero h1={l.h1} lead={l.lead} eyebrow={`${l.admin}`} breadcrumbs={breadcrumbs} illustration={l.distanceKm === 0 ? 'arborist' : 'forest'} photo={`miejscowosc-${l.slug}`} photoAlt={`Wycinka drzew ${l.inName} – SCH Wycinka Drzew`}>
+    <ul class="meta">
+      <li><Icon name="truck" size={18} />{l.distanceKm === 0 ? 'Baza firmy' : `${l.distanceKm} km od bazy`}</li>
+      <li><Icon name="clock" size={18} />{l.distanceKm === 0 ? 'Dojazd do 15 min' : `Dojazd ok. ${l.driveMin} min`}</li>
+      <li><Icon name="file" size={18} />Bezpłatna wycena</li>
+    </ul>
+  </PageHero>
+
+  <section class="section" style="padding-top: 0">
+    <div class="container layout">
+      <article class="prose">
+        <h2>Wycinka drzew {l.inName} – co warto wiedzieć?</h2>
+        {l.paragraphs.map((p) => <p set:html={p} />)}
+        <h2>Gdzie zgłosić wycinkę drzewa {l.inName}?</h2>
+        <p>Zgłoszenia zamiaru usunięcia drzewa oraz wnioski o zezwolenie dla tej lokalizacji przyjmuje: <strong>{l.office}</strong>. Zanim złożysz dokumenty, sprawdź progi obwodu pnia w naszym <a href="/poradnik/pozwolenie-na-wycinke-drzew/">poradniku o pozwoleniach na wycinkę</a>.</p>
+        <h2>Usługi dostępne {l.inName}</h2>
+        <ul>
+          {services.map((s) => <li><a href={`/uslugi/${s.slug}/`}>{s.name}</a> – {s.excerpt}</li>)}
+        </ul>
+        {l.areas.length > 0 && (
+          <>
+            <h2>Obsługiwane miejscowości i osiedla</h2>
+            <p>{l.areas.join(', ')} – oraz pozostałe miejscowości w okolicy.</p>
+          </>
+        )}
+      </article>
+      <aside class="side">
+        <AreaMap active={l.slug} />
+        <div class="card">
+          <p class="side__h">Najbliżej {l.name}</p>
+          <ul class="near">{nearby.map((n) => <li><a href={`/obszar-dzialania/${n.slug}/`}>Wycinka drzew {n.name}</a></li>)}</ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="faq-h">
+    <div class="container narrow">
+      <div class="section-head"><h2 id="faq-h">Pytania mieszkańców: {l.name}</h2></div>
+      <FaqList items={l.faq} open />
+    </div>
+  </section>
+  <CtaBand title={`Wycinka drzew ${l.inName} – bezpłatna wycena`} />
+</Base>
+<style>
+  .meta { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 8px 20px; font-weight: 600; font-size: .95rem; }
+  .meta li { display: inline-flex; gap: 8px; align-items: center; }
+  .meta :global(svg) { color: var(--moss); }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: clamp(32px, 5vw, 64px); align-items: start; }
+  .side { display: grid; gap: 16px; position: sticky; top: 100px; }
+  .side__h { font-family: var(--display); font-weight: 700; font-size: 1.2rem; }
+  .near { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .near a { display: block; padding: 6px 0; }
+  @media (max-width: 980px) { .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; } }
+</style>

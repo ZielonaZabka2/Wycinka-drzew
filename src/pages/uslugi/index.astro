@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services } from '../../data/services';
+import { site } from '../../data/site';
+const breadcrumbs = [{ name: 'Usługi', href: '/uslugi/' }];
+const list = {
+  '@type': 'ItemList',
+  name: 'Usługi SCH Wycinka Drzew',
+  itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${site.url}/uslugi/${s.slug}/` })),
+};
+---
+<Base title="Usługi – wycinka drzew, zwyżka, prace wysokościowe | SCH" description="Wszystkie usługi SCH Wycinka Drzew w Ostrołęce: wycinka drzew i metoda alpinistyczna, zwyżka z operatorem, pielęgnacja drzew, prace na wysokościach, odśnieżanie dachów." breadcrumbs={breadcrumbs} schema={[list]} pageType="CollectionPage">
+  <PageHero h1="Usługi: wycinka drzew, zwyżka i prace na wysokości" lead={`Sześć usług, jeden zespół z Ostrołęki. Usuwamy drzewa w każdym miejscu – także przy domach i liniach – pielęgnujemy korony, wykonujemy prace z podnośnika koszowego i z lin, a zimą odśnieżamy dachy. Obsługujemy teren do ok. ${site.serviceRadiusKm} km, wycena jest bezpłatna.`} breadcrumbs={breadcrumbs} />
+  <section class="section" style="padding-top: 0">
+    <div class="container grid grid-3">
+      {services.map((s) => <ServiceCard service={s} headingLevel="h2" />)}
+    </div>
+  </section>
+  <CtaBand />
+</Base>
