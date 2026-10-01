@@ -25,7 +25,7 @@ Strona firmy **SCH Wycinka Drzew** (Ostrołęka) – statyczny serwis Astro zopt
 
 ## Zdjęcia (logo i realizacje)
 
-Strona działa bez zdjęć (ilustracje SVG), ale **prawdziwe zdjęcia z realizacji mocno podnoszą konwersję i E-E-A-T**. Wrzuć pliki JPG/PNG/WebP do `src/assets/photos/` o nazwach:
+Część sekcji używa zdjęć z Pexels (licencja darmowa, także komercyjnie) zdefiniowanych w `src/data/photos.ts` – pobierają się i optymalizują podczas builda na Vercel; gdy bank zdjęć jest niedostępny, pokazuje się ilustracja SVG. Aby wymienić zdjęcie, zmień jego numer ID z adresu pexels.com/photo/…-<ID>/ albo usuń wpis. Mimo to **prawdziwe zdjęcia z realizacji mocno podnoszą konwersję i E-E-A-T**. Wrzuć pliki JPG/PNG/WebP do `src/assets/photos/` o nazwach:
 
 | Plik | Gdzie się pojawi |
 |---|---|

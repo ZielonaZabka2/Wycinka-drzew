@@ -6,6 +6,7 @@ export default defineConfig({
   trailingSlash: 'always',
   build: { format: 'directory', inlineStylesheets: 'always' },
   compressHTML: true,
+  image: { domains: ['images.pexels.com'] },
   prefetch: false,
   integrations: [
     sitemap({

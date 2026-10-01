@@ -1,10 +1,11 @@
 ---
-// Zdjęcie z banku/klienta, jeśli istnieje plik src/assets/photos/<name>.(jpg|jpeg|png|webp),
-// w przeciwnym razie autorska ilustracja SVG. Astro generuje AVIF/WebP w kilku rozmiarach.
-import { Picture } from 'astro:assets';
+// Kolejność: plik lokalny src/assets/photos/<name>.(jpg|jpeg|png|webp) → zdjęcie z banku (src/data/photos.ts)
+// → autorska ilustracja SVG. Astro generuje AVIF/WebP w kilku rozmiarach.
+import { Picture, inferRemoteSize } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Illustration from './Illustration.astro';
 import type { Illustration as IllustrationVariant } from '../data/types';
+import { stockPhotos, pexelsUrl } from '../data/photos';
 
 interface Props {
   name: string;
@@ -17,20 +18,34 @@ interface Props {
 const { name, alt, fallback, priority = false, sizes = '(min-width: 1024px) 560px, 100vw', class: cls } = Astro.props;
 const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
 const match = Object.entries(files).find(([path]) => path.split('/').pop()!.replace(/\.[^.]+$/, '') === name);
-const img = match?.[1].default;
+const local = match?.[1].default;
+
+let remote: { src: string; width: number; height: number; alt: string } | undefined;
+const stock = !local ? stockPhotos[name] : undefined;
+if (stock) {
+  const src = pexelsUrl(stock.id);
+  try {
+    const size = await inferRemoteSize(src);
+    if (size.width && size.height) remote = { src, width: size.width, height: size.height, alt: stock.alt };
+  } catch {
+    // brak dostępu do banku zdjęć podczas builda → ilustracja
+  }
+}
+const common = {
+  formats: ['avif', 'webp'] as const,
+  widths: [480, 800, 1200],
+  sizes,
+  quality: 62,
+  loading: priority ? ('eager' as const) : ('lazy' as const),
+  fetchpriority: priority ? ('high' as const) : ('auto' as const),
+  decoding: priority ? ('sync' as const) : ('async' as const),
+};
 ---
 <div class:list={['photo', cls]}>
-  {img ? (
-    <Picture
-      src={img}
-      alt={alt}
-      formats={['avif', 'webp']}
-      widths={[480, 800, 1200]}
-      sizes={sizes}
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      decoding={priority ? 'sync' : 'async'}
-    />
+  {local ? (
+    <Picture src={local} alt={alt} {...common} formats={['avif', 'webp']} />
+  ) : remote ? (
+    <Picture src={remote.src} width={remote.width} height={remote.height} alt={remote.alt} {...common} formats={['avif', 'webp']} />
   ) : (
     <Illustration variant={fallback} title={alt} />
   )}
